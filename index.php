@@ -42,23 +42,31 @@
                             <div class="card-body p-4">
                                 <div class="p-2">
                                     <h5 class="mb-5 text-center">Sign In </h5>
-                                    <form class="form-horizontal">
+                                    <form class="form-horizontal" method="POST" id="sign_in_form">
 
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group mb-4">
                                                     <label for="username">Username</label>
-                                                    <input type="text" class="form-control" id="username" placeholder="Enter username">
+                                                    <input type="text" class="form-control" name="username" id="username" placeholder="Enter username" required>
                                                 </div>
                                                 <div class="form-group mb-4">
                                                     <label for="userpassword">Password</label>
-                                                    <input type="password" class="form-control" id="userpassword" placeholder="Enter password">
+                                                    <input type="password" name="password" class="form-control" id="userpassword" placeholder="Enter password" required>
                                                 </div>
 
                                               
-                                                <div class="mt-4">
-                                                    <button class="btn btn-success btn-block waves-effect waves-light" type="submit">Log In</button>
+                                                <div class="mt-4 mb-4">
+                                                    <button class="btn btn-success btn-block waves-effect waves-light" type="submit">
+                                                         <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+
+                                                    Log In</button>
                                                 </div>
+
+                                                <div class="text-center" id="error-show">
+                                                    <span style="margin-top: 10px;font-weight: bolder;color: red">Username or Password Incorrect</span>
+                                                </div>
+                                                
                                               
                                             </div>
                                         </div>
@@ -81,6 +89,50 @@
         <script src="assets/libs/node-waves/waves.min.js"></script>
 
         <script src="assets/js/app.js"></script>
+
+
+        <script type='text/javascript'>
+                $(document).ready(function(){
+
+                    $('.spinner-border').hide();
+                    $('#error-show').hide();
+
+                    $('#sign_in_form').submit(function(e){
+                        $('.spinner-border').show();
+                    e.preventDefault();
+                    var formdata = $(this).serialize();
+
+                 $.ajax({
+                url:'api_calls/login.php',
+                type: 'POST',
+                data: formdata,
+                success:function(res){
+                
+                if(res === "office"){
+                
+                window.location.href='agents.php';
+
+                }else if(res === "not_exist"){
+                $('#error-show').show();
+                $('.spinner-border').hide();
+                
+                }else if(res === "student"){
+                    window.location.href='students.php';
+                }else if(res === "admin"){
+                    window.location.href='add-programme.php'
+                }
+            },
+                error:function(res){
+                    console.log(res);
+                }
+
+            });
+
+                })
+
+            });
+    
+    </script>
 
     </body>
 </html>

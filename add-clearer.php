@@ -157,6 +157,7 @@
                                                         <th scope="col">Departments</th>
                                                         <th scope="col">Role</th>
                                                         <th scope="col">Address</th>
+                                                        <th scope="col">Password</th>
                                                         <th scope="col">Action</th>
                                                     </tr>
                                                 </thead>

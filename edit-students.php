@@ -27,6 +27,8 @@ if(isset($_GET['d'])){
         <!-- Responsive datatable examples -->
         <link href="assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />  
 
+        <link href="assets/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet">
+
          <!-- alertifyjs Css -->
         <link href="assets/libs/alertifyjs/build/css/alertify.min.css" rel="stylesheet" type="text/css" />
 
@@ -63,7 +65,7 @@ if(isset($_GET['d'])){
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-flex align-items-center justify-content-between">
-                                    <h4 class="mb-0 font-size-18">View Students By Department</h4>
+                                    <h4 class="mb-0 font-size-18">Manage Students</h4>
 
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
@@ -83,7 +85,7 @@ if(isset($_GET['d'])){
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="header-title mb-4">All Departments</h4>
+                                        <h4 class="header-title mb-4">All Students </h4>
 
                                         <div class="table-responsive">
                                             <table id="datatable-buttons" class="table table-centered table-nowrap mb-0 table-hover datatable">
@@ -94,9 +96,10 @@ if(isset($_GET['d'])){
                                                         <th scope="col">Index</th>
                                                         <th scope="col">Department</th>
                                                         <th scope="col">Program</th>
-                                                        <th scope="col">Level</th>
+                                                        <th scope="col">Contact</th>
                                                         <th scope="col">Registered</th>
                                                         <th scope="col">Completed</th>
+                                                        <th scope="col">Password</th>
                                                         <th scope="col">Action</th>
                                        
                                                     </tr>
@@ -112,9 +115,10 @@ while($eachStudent= mysqli_fetch_array($getStudents)){
     $get_student_index = $eachStudent['student_index'];
     $get_student_department = $eachStudent['student_department'];
     $get_student_program = $eachStudent['student_program'];
-    $get_student_level = $eachStudent['student_level'];
+    $get_student_contact = $eachStudent['student_contact'];
     $get_student_registered = $eachStudent['student_year_registered'];
     $get_student_completed = $eachStudent['student_year_completed'];
+    $get_student_password = $eachStudent['student_pass'];
 
    ?>
     <tr>
@@ -123,9 +127,10 @@ while($eachStudent= mysqli_fetch_array($getStudents)){
     <td><?php echo $get_student_index;  ?></td>
     <td><?php echo $get_student_department;  ?></td>
     <td><?php echo $get_student_program;  ?></td>
-    <td><?php echo $get_student_level;  ?></td>
+    <td><?php echo $get_student_contact;  ?></td>
     <td><?php echo $get_student_registered;  ?></td>
     <td><?php echo $get_student_completed;  ?></td>
+    <td><?php echo $get_student_password;  ?></td>
     <td>
         <button type="button" class="btn btn-outline-success btn-sm btn-edit" id="<?php echo $get_student_Id  ?>">Edit</button>
         <button type="button" class="btn btn-outline-danger btn-sm btn-delete" id="<?php echo $get_student_Id  ?>">Delete</button>
@@ -238,14 +243,12 @@ while($eachStudent= mysqli_fetch_array($getStudents)){
                                                   </select>
                                                 </div>
 
-                                                 <div class="col-md-6 mb-3">
-                                                    <label for="level">Level</label>
-                                                    <select class="form-control" name="level" id="level">
-                                                        <option value="100">100</option>
-                                                        <option value="200">200</option>
-                                                        <option value="300">300</option>
-                                                        <option value="400">400</option>
-                                                    </select>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="contact">Contact</label>
+                                                    <input type="text" name="contact" class="form-control contact" id="contact" placeholder="Contact"required>
+                                                    <div class="valid-feedback">
+                                                        Looks good!
+                                                    </div>
                                                 </div>
 
                                                  <div class="col-md-6 mb-3">
@@ -260,6 +263,15 @@ while($eachStudent= mysqli_fetch_array($getStudents)){
                                                 <div class="col-md-6 mb-3">
                                                     <label for="year_completed">Year Completed</label>
                                                     <input placeholder="Year Completed" type="text" class="form-control" data-provide="datepicker" data-date-format="MM yyyy" data-date-autoclose="true" data-date-min-view-mode="1" required id="year_completed" name="year_completed">
+                                                    <div class="valid-feedback">
+                                                        Looks good!
+                                                    </div>
+                                                </div>
+
+                                                
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="password">Password</label>
+                                                    <input placeholder="Password" type="text" class="form-control" required id="password" name="password" readonly>
                                                     <div class="valid-feedback">
                                                         Looks good!
                                                     </div>
@@ -339,6 +351,8 @@ while($eachStudent= mysqli_fetch_array($getStudents)){
 
          <script src="assets/libs/alertifyjs/build/alertify.min.js"></script>
 
+         <script src="assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+
         <script src="assets/js/pages/alertifyjs.init.js"></script>
 
         <script src="assets/js/app.js"></script>
@@ -395,11 +409,12 @@ alertify.set('notifier','position', 'top-right');
                 
                 $('#name').val(res.name);
                 $('#department').val(res.department);
-                $('#level').val(res.level);
+                $('#contact').val(res.contact);
                 $('#programme').val(res.programme);
                 $('#index_number').val(res.index);
                 $('#year_started').val(res.started);
                 $('#year_completed').val(res.completed);
+                $('#password').val(res.password);
 
                 $('#myModal').modal('show');
             },

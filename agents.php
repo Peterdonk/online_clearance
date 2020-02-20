@@ -4,8 +4,15 @@
 
 require_once 'db.php';
 
-$student_department = 5;
-$student_id = 2;
+
+if(!isset($_COOKIE['si'])){
+    echo '<script>window.location.href="index.php";</script>';
+}else{
+    $department = $_COOKIE['d'];
+$id = $_COOKIE['si']; //clearers secret ID
+}
+
+
 
 
 ?>
@@ -29,6 +36,12 @@ $student_id = 2;
 
         <!-- jvectormap -->
         <link href="assets/libs/jqvmap/jqvmap.min.css" rel="stylesheet" />
+
+         <!-- alertifyjs Css -->
+        <link href="assets/libs/alertifyjs/build/css/alertify.min.css" rel="stylesheet" type="text/css" />
+
+        <!-- alertifyjs default themes  Css -->
+        <link href="assets/libs/alertifyjs/build/css/themes/default.min.css" rel="stylesheet" type="text/css" />
 
         <!-- Bootstrap Css -->
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -485,7 +498,7 @@ $student_id = 2;
 
                     
 
-                 
+                 <input type="hidden" name="" id="clearer_id" value="<?php echo $id;  ?>">
 
                         <div class="row">
                             <div class="col-lg-12">
@@ -499,7 +512,12 @@ $student_id = 2;
                                                     <tr>
                                                      
                                                         <th scope="col">ID</th>
-                                                        <th scope="col">Office</th>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Index</th>
+                                                        <th scope="col">Department</th>
+                                                        <th scope="col">Programme</th>
+                                                        <th scope="col">Started</th>
+                                                        <th scope="col">Completed</th>
                                                         <th scope="col">Status</th>
                                                         <th scope="col">Action</th>
                                                     </tr>
@@ -511,32 +529,38 @@ $student_id = 2;
                                                         <?php
 
                                                         $counter = 1;
-                                                        $id_array = array();
+                                                       
 
-$get_student_clearance_form = mysqli_query($connectionString,"SELECT * FROM clearing_agents WHERE agent_department = '$student_department' ")or die(mysqli_error($connectionString));
-                                                        while ( $each_agent = mysqli_fetch_array($get_student_clearance_form)) {
+$get_students = mysqli_query($connectionString,"SELECT * FROM student_tbl WHERE student_department = '$department' ")or die(mysqli_error($connectionString));
+                                                        while ( $each_student = mysqli_fetch_array($get_students)) {
                                                             
 
-                                                            $agent_role = $each_agent['agent_role'];
-                                                            $agent_secret_id = $each_agent['agent_secret_id'];
-
-                                                            if(in_array($agent_secret_id, $id_array)){
-
-                                                            }else{
-
+                                            $student_id = $each_student['student_id'];
+                                            $student_name = $each_student['student_name'];
+                                            $student_index = $each_student['student_index'];
+                                            $student_department = $each_student['student_department'];
+                                            $student_programme = $each_student['student_program'];
+                                            $student_started = $each_student['student_year_registered'];
+                                            $student_completed = $each_student['student_year_completed'];
 
 
                                                             ?>
 <tr>
 
-                                                        <td><b><?php echo $counter;   ?></b></td>
+                                                <td><?php echo $counter; ?></td>
+                                                <td><?php echo $student_name; ?></td>
+                                                <td><?php echo $student_index; ?></td>
+                                                <td><?php echo $student_department; ?></td>
+                                                <td><?php echo $student_programme;  ?></td>
+                                                <td><?php echo $student_started;  ?></td>
+                                                <td><?php echo $student_completed;  ?></td>
 
 
                                                         <?php    
 
                                                         //search for students presence
 
-                                                        $check_presence = mysqli_query($connectionString,"SELECT * FROM cleared_students WHERE cleared_student_id = '$student_id' AND cleared_agent_id = '$agent_secret_id' LIMIT 1");
+                                                        $check_presence = mysqli_query($connectionString,"SELECT * FROM cleared_students WHERE cleared_student_id = '$student_id' AND cleared_agent_id = '$id' LIMIT 1");
 
                                                         if(mysqli_num_rows($check_presence) > 0){ 
 
@@ -545,25 +569,24 @@ $get_student_clearance_form = mysqli_query($connectionString,"SELECT * FROM clea
 
                                                             ?>
 
- <td><?php echo $agent_role; ?></td>
+
 <td>
                                                             <i class="mdi mdi-checkbox-blank-circle text-success mr-1"></i> Complete
                                                         </td>
 
                                                         <td>
 
-                                                        <button type="button" class="btn btn-outline-success btn-sm btn-view-officer" id="<?php echo $agent_secret_id; ?>">View Officer Info</button></td>
+                                                        <button type="button" class="btn btn-outline-danger btn-sm btn-unclear" id="<?php echo $student_id; ?>">Undo Action</button></td>
 
 
 <?php }else{ ?>
- <td><?php echo $agent_role; ?></td>
 <td>
                                                             <i class="mdi mdi-checkbox-blank-circle text-warning mr-1"></i> Pending
                                                         </td>
 
                                                         <td>
 
-                                                        <button type="button" class="btn btn-outline-success btn-sm btn-view-officer" id="<?php echo $agent_secret_id; ?>">View Officer Info</button>
+                                                        <button type="button" class="btn btn-outline-success btn-sm btn-clear" id="<?php echo $student_id; ?>"> Clear Student</button>
 
                                                     </td>
 <?php } ?>
@@ -585,7 +608,7 @@ $get_student_clearance_form = mysqli_query($connectionString,"SELECT * FROM clea
 
 
 
-                                                <?php    $counter++;array_push($id_array, $agent_secret_id);  } }
+                                                <?php    $counter++; }
 
                                                         ?>
 
@@ -684,22 +707,25 @@ $get_student_clearance_form = mysqli_query($connectionString,"SELECT * FROM clea
         <div class="rightbar-overlay"></div>
 
         <!-- JAVASCRIPT -->
-        <script src="assets/libs/jquery/jquery.min.js"></script>
+         <script src="assets/libs/jquery/jquery.min.js"></script>
         <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="assets/libs/metismenu/metisMenu.min.js"></script>
         <script src="assets/libs/simplebar/simplebar.min.js"></script>
         <script src="assets/libs/node-waves/waves.min.js"></script>
 
-        <!-- apexcharts -->
-        <script src="assets/libs/apexcharts/apexcharts.min.js"></script>
+      
 
         <script src="assets/libs/slick-slider/slick/slick.min.js"></script>
 
         <!-- Jq vector map -->
         <script src="assets/libs/jqvmap/jquery.vmap.min.js"></script>
         <script src="assets/libs/jqvmap/maps/jquery.vmap.usa.js"></script>
+        <!-- <script src="assets/js/pages/dashboard.init.js"></script> -->
 
-        <script src="assets/js/pages/dashboard.init.js"></script>
+                 <script src="assets/libs/alertifyjs/build/alertify.min.js"></script>
+
+        <script src="assets/js/pages/alertifyjs.init.js"></script>
+
 
         <script src="assets/js/app.js"></script>
 
@@ -708,29 +734,70 @@ $get_student_clearance_form = mysqli_query($connectionString,"SELECT * FROM clea
 
         $(document).ready(function(){
 
+             alertify.set('notifier','position', 'top-right');
 
-            $(document).on('click','.btn-view-officer',function(e){
 
+            $(document).on('click','.btn-clear',function(e){
                 var id = $(this).attr('id');
-
-                  $.ajax({
-                url:'api_calls/get-officer-details.php',
+                var clearer = $("#clearer_id").val();
+                alertify.confirm("Are You Sure Want To Clear This Student",
+                  function(){
+                    $.ajax({
+                url:'api_calls/clear-student.php',
                 type: 'POST',
-                data: {id:id},
+                data: {id:id,clearer:clearer},
                 success:function(res){
                 
-                $('#name').html(res.name);
-                $('#contact').html(res.contact);
-                $('#address').html(res.address);
-                $('#role').html(res.role);
-
-                $('#myModal').modal('show');
+                if(res==='success'){
+                    alertify.success("Cleared Successfully");
+                    window.location.reload
+                }else{
+                    alertify.error("Something went wrong");
+                }
+                
             },
                 error:function(res){
                     console.log(res);
                 }
 
             });
+                  },
+                  function(){
+                   
+                  }).set('labels', {ok:'Yes, Approve', cancel:'Not Today'}).set('movable','true').setHeader('Clear Student');
+            })
+
+
+
+
+            $(document).on('click','.btn-unclear',function(e){
+                var id = $(this).attr('id');
+                var clearer = $("#clearer_id").val();
+                alertify.confirm("Are You Sure Want To Undo Your Previous Action..?",
+                  function(){
+                    $.ajax({
+                url:'api_calls/unclear-student.php',
+                type: 'POST',
+                data: {id:id,clearer:clearer},
+                success:function(res){
+                
+                if(res==='success'){
+                    alertify.success("Student Uncleared Successfully");
+                    window.location.reload
+                }else{
+                    alertify.error("Something went wrong");
+                }
+                
+            },
+                error:function(res){
+                    console.log(res);
+                }
+
+            });
+                  },
+                  function(){
+                   
+                  }).set('labels', {ok:'Yes, Undo Action', cancel:'Not Today'}).set('movable','true').setHeader('Unclear Student');
             })
 
 

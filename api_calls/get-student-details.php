@@ -15,9 +15,10 @@ header('Content-type: application/json; charset=UTF-8');
 	    $response['index'] = $eachStudent['student_index'];
 	    $response['department'] = $eachStudent['student_department'];
 	    $response['programme'] = $eachStudent['student_program'];
-	    $response['level'] = $eachStudent['student_level'];
+	    $response['contact'] = $eachStudent['student_contact'];
 	    $response['started'] = $eachStudent['student_year_registered'];
 	    $response['completed'] = $eachStudent['student_year_completed'];
+	    $response['password'] = $eachStudent['student_pass'];
 
         
         echo json_encode($response);

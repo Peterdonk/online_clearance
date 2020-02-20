@@ -63,7 +63,7 @@ if(isset($_GET['d'])){
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-flex align-items-center justify-content-between">
-                                    <h4 class="mb-0 font-size-18">View Students By Department</h4>
+                                    <h4 class="mb-0 font-size-18">View Students</h4>
 
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
@@ -83,7 +83,7 @@ if(isset($_GET['d'])){
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="header-title mb-4">All Departments</h4>
+                                        <h4 class="header-title mb-4">All Students</h4>
 
                                         <div class="table-responsive">
                                             <table id="datatable-buttons" class="table table-centered table-nowrap mb-0 table-hover">
@@ -94,9 +94,10 @@ if(isset($_GET['d'])){
                                                         <th scope="col">Index</th>
                                                         <th scope="col">Department</th>
                                                         <th scope="col">Program</th>
-                                                        <th scope="col">Level</th>
+                                                        <th scope="col">Contact</th>
                                                         <th scope="col">Registered</th>
                                                         <th scope="col">Completed</th>
+                                                        <th scope="col">Password</th>
                                        
                                                     </tr>
                                                 </thead>
@@ -111,9 +112,10 @@ while($eachStudent= mysqli_fetch_array($getStudents)){
     $get_student_index = $eachStudent['student_index'];
     $get_student_department = $eachStudent['student_department'];
     $get_student_program = $eachStudent['student_program'];
-    $get_student_level = $eachStudent['student_level'];
+    $get_student_contact = $eachStudent['student_contact'];
     $get_student_registered = $eachStudent['student_year_registered'];
     $get_student_completed = $eachStudent['student_year_completed'];
+    $get_student_password = $eachStudent['student_pass'];
 
    ?>
     <tr>
@@ -122,9 +124,10 @@ while($eachStudent= mysqli_fetch_array($getStudents)){
     <td><?php echo $get_student_index;  ?></td>
     <td><?php echo $get_student_department;  ?></td>
     <td><?php echo $get_student_program;  ?></td>
-    <td><?php echo $get_student_level;  ?></td>
+    <td><?php echo $get_student_contact;  ?></td>
     <td><?php echo $get_student_registered;  ?></td>
     <td><?php echo $get_student_completed;  ?></td>
+    <td><?php echo $get_student_password;  ?></td>
 </tr>
 
 

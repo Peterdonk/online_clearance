@@ -16,6 +16,7 @@ while($eachAgent = mysqli_fetch_array($getAgents)){
     $get_address = $eachAgent['agent_address'];
     $get_department = $eachAgent['agent_department'];
     $get_role = $eachAgent['agent_role'];
+    $get_password = $eachAgent['agent_password'];
 
 
 if(in_array($get_secret_id, $secret_id_array)){
@@ -57,7 +58,10 @@ if(mysqli_num_rows($check_for_multiple) > 1){
 
      <td><?php echo $get_role;  ?></td>
 
-    <td><?php echo $get_address;  ?></td>                                                                           
+    <td><?php echo $get_address;  ?></td>
+
+    <td><?php echo $get_password;  ?></td>
+
     <td>
         <button type="button" class="btn btn-outline-success btn-sm btn-edit" id="<?php echo $get_secret_id  ?>">Edit</button>
         <button type="button" class="btn btn-outline-danger btn-sm btn-delete" id="<?php echo $get_secret_id  ?>">Delete</button>
