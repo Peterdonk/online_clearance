@@ -5,13 +5,13 @@
 <html lang="en">
 
     <head>
-        <meta charset="utf-8" />
-        <title>Form Validation | Apaxy - Responsive Bootstrap 4 Admin Dashboard</title>
+         <meta charset="utf-8" />
+        <title>Clearing Office | Online Clearance</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+        <meta content="An online clearing system for Akim State College University" name="description" />
         <meta content="Themesdesign" name="author" />
         <!-- App favicon -->
-        <link rel="shortcut icon" href="assets/images/favicon.ico">
+        <link rel="shortcut icon" href="assets/images/akim_state.gif">
 
          <!-- alertifyjs Css -->
         <link href="assets/libs/alertifyjs/build/css/alertify.min.css" rel="stylesheet" type="text/css" />
@@ -51,15 +51,9 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-flex align-items-center justify-content-between">
-                                    <h4 class="mb-0 font-size-18">Add Clearing Agent</h4>
+                                    <h4 class="mb-0 font-size-18">Add Clearing Office</h4>
 
-                                    <div class="page-title-right">
-                                        <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Apaxy</a></li>
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Forms</a></li>
-                                            <li class="breadcrumb-item active">Form Validation</li>
-                                        </ol>
-                                    </div>
+                                  
                                     
                                 </div>
                             </div>
@@ -70,10 +64,10 @@
                             <div class="col-sm-12 col-md-6">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="header-title">Add New Clearing Agent</h4>
+                                        <h4 class="header-title">Add New Clearing Office</h4>
                                        
                                         
-                                        <form class="needs-validation mt-4" novalidate id="add-agent" method="POST">
+                                        <form class=" mt-4"  id="add-agent" method="POST">
                                             <div class="row">
                                                 <div class="col-md-12 mb-3">
                                                     <label for="name">Name</label>
@@ -116,7 +110,7 @@
 
                                                 <div class="col-md-12 mb-3">
                                                     <label for="role">Role</label>
-                                                    <input type="text" name="role" class="form-control role" id="role" placeholder="Role"required>
+                                                    <input type="text" name="role" class="form-control role" id="role" placeholder="Role" required>
                                                     <div class="valid-feedback">
                                                         Looks good!
                                                     </div>
@@ -125,7 +119,7 @@
                                                 <div class="col-md-12 mb-3">
                                                     <label for="validationCustom01">Address</label>
                                                    <textarea rows="5" placeholder="Address" name="address" class="form-control"></textarea>
-                                                    <div class="valid-feedback">
+                                                    <div class="valid-feedback" required>
                                                         Looks good!
                                                     </div>
                                                 </div>
@@ -191,7 +185,7 @@
 </button>
 </div>
 <div class="modal-body">
-<form class="needs-validation" novalidate id="edit-agent" method="POST">
+<form class=""  id="edit-agent" method="POST">
     <input type="hidden" name="agent_id" value="" id="agent_id">
                                             
        <div class="row">
@@ -236,7 +230,7 @@
 
                                                 <div class="col-md-12 mb-3">
                                                     <label for="role">Role</label>
-                                                    <input type="text" name="role" class="form-control role" id="edit-role" placeholder="Role"required>
+                                                    <input type="text" name="role" class="form-control role" id="edit-role" placeholder="Role" required>
                                                     <div class="valid-feedback">
                                                         Looks good!
                                                     </div>
@@ -244,7 +238,7 @@
 
                                                 <div class="col-md-12 mb-3">
                                                     <label for="validationCustom01">Address</label>
-                                                   <textarea rows="5" placeholder="Address" id="edit-address" name="address" class="form-control"></textarea>
+                                                   <textarea rows="5" placeholder="Address" id="edit-address" name="address" class="form-control"></textarea required>
                                                     <div class="valid-feedback">
                                                         Looks good!
                                                     </div>
@@ -266,28 +260,7 @@
 
 
 
-
-
-
-
-
-
-
-                
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                2019 © Apaxy.
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="text-sm-right d-none d-sm-block">
-                                    Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
+    <?php  require_once 'footer.php'; ?>
             </div>
             <!-- end main content-->
 

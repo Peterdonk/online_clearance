@@ -15,6 +15,9 @@ require_once '../db.php';
 
                 $secret_id = $officer_details['agent_secret_id'];
                 $agent_department = $officer_details['agent_department'];
+                $agent_name = $officer_details['agent_name'];
+
+                setcookie('nm',$agent_name,time()+2*24*60*60,'/');
 
                 setcookie('si',$secret_id,time()+2*24*60*60,'/');
                 setcookie('d',$agent_department,time()+2*24*60*60,'/');
@@ -27,6 +30,7 @@ require_once '../db.php';
         }elseif ($get_name==='admin' || $get_name==='Admin') {
             if($get_password === 'admin_pass'){
                 echo 'admin';
+                setcookie('nm','Admin',time()+2*24*60*60,'/');
             }else{
                 echo 'not_exist';
             }
@@ -41,9 +45,12 @@ require_once '../db.php';
 
                 $student_id = $student_details['student_id'];
                 $student_department = $student_details['student_department'];
+                $student_name= $student_details['student_name'];
 
                 setcookie('si',$student_id,time()+2*24*60*60,'/');
                 setcookie('d',$student_department,time()+2*24*60*60,'/');
+
+                setcookie('nm',$student_name,time()+2*24*60*60,'/');
 
                 echo 'student';
 
