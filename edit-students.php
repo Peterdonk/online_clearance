@@ -12,13 +12,12 @@ if(isset($_GET['d'])){
 <html lang="en">
 
     <head>
-        <meta charset="utf-8" />
-        <title>Form Validation | Apaxy - Responsive Bootstrap 4 Admin Dashboard</title>
+          <title>Edit Students | Online Clearance</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+        <meta content="An online clearing system for Akim State College University" name="description" />
         <meta content="Themesdesign" name="author" />
         <!-- App favicon -->
-        <link rel="shortcut icon" href="assets/images/favicon.ico">
+        <link rel="shortcut icon" href="assets/images/akim_state.gif">
 
           <!-- DataTables -->
         <link href="assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -67,13 +66,7 @@ if(isset($_GET['d'])){
                                 <div class="page-title-box d-flex align-items-center justify-content-between">
                                     <h4 class="mb-0 font-size-18">Manage Students</h4>
 
-                                    <div class="page-title-right">
-                                        <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Apaxy</a></li>
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Forms</a></li>
-                                            <li class="breadcrumb-item active">Form Validation</li>
-                                        </ol>
-                                    </div>
+                                   
                                     
                                 </div>
                             </div>
@@ -88,7 +81,7 @@ if(isset($_GET['d'])){
                                         <h4 class="header-title mb-4">All Students </h4>
 
                                         <div class="table-responsive">
-                                            <table id="datatable-buttons" class="table table-centered table-nowrap mb-0 table-hover datatable">
+                                            <table id="datatable-buttons" class="table table-striped table-centered table-nowrap mb-0 table-hover datatable">
                                                 <thead>
                                                      <tr>
                                                         <th scope="col">ID</th>
@@ -107,14 +100,14 @@ if(isset($_GET['d'])){
                                                 <tbody>                                                      
 <?php   
 $counter = 1;
-$getStudents = mysqli_query($connectionString,"SELECT * FROM student_tbl WHERE student_department = '$selected_department' ORDER BY student_id ASC")or die(mysqli_error($connectionString));
+$getStudents = mysqli_query($connectionString,"SELECT * FROM student_tbl join departments_tbl on student_tbl.student_department = departments_tbl.department_id join programmes_tbl on student_tbl.student_program = programmes_tbl.programmes_id WHERE student_department = '$selected_department' ORDER BY student_id ASC")or die(mysqli_error($connectionString));
 while($eachStudent= mysqli_fetch_array($getStudents)){  
 
     $get_student_Id = $eachStudent['student_id'];
     $get_student_name = $eachStudent['student_name'];
     $get_student_index = $eachStudent['student_index'];
-    $get_student_department = $eachStudent['student_department'];
-    $get_student_program = $eachStudent['student_program'];
+    $get_student_department = $eachStudent['department_name'];
+    $get_student_program = $eachStudent['programmes_name'];
     $get_student_contact = $eachStudent['student_contact'];
     $get_student_registered = $eachStudent['student_year_registered'];
     $get_student_completed = $eachStudent['student_year_completed'];
@@ -200,7 +193,7 @@ while($eachStudent= mysqli_fetch_array($getStudents)){
                                                       
                                                     <?php 
 
-                                                    $get_departments = mysqli_query($connectionString,"SELECT * FROM departments_tbl")or die(mysqli_error($connectionString));
+                                                    $get_departments = mysqli_query($connectionString,"SELECT * FROM  departments_tbl")or die(mysqli_error($connectionString));
 
                                                     while($each_department = mysqli_fetch_array($get_departments)){
 
@@ -271,7 +264,7 @@ while($eachStudent= mysqli_fetch_array($getStudents)){
                                                 
                                                 <div class="col-md-6 mb-3">
                                                     <label for="password">Password</label>
-                                                    <input placeholder="Password" type="text" class="form-control" required id="password" name="password" readonly>
+                                                    <input placeholder="Password" type="text" class="form-control" required id="password" name="password" >
                                                     <div class="valid-feedback">
                                                         Looks good!
                                                     </div>
@@ -304,21 +297,9 @@ while($eachStudent= mysqli_fetch_array($getStudents)){
 
 
 
-                
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                2019 © Apaxy.
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="text-sm-right d-none d-sm-block">
-                                    Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
+               <?php  require_once 'footer.php'; ?>
+
+
             </div>
             <!-- end main content-->
 
@@ -363,6 +344,8 @@ while($eachStudent= mysqli_fetch_array($getStudents)){
              
 alertify.set('notifier','position', 'top-right');
 
+
+
             $('#edit-student').submit(function(e){
                     e.preventDefault();
                     var formdata = $(this).serialize();
@@ -373,10 +356,12 @@ alertify.set('notifier','position', 'top-right');
                 success:function(res){
                 
                 if(res === "success"){
-              alertify.success("Updated Successfully");
+            
 
               $('#myModal').modal('hide');
-              window.location.reload();
+
+              alertify.notify('Updated Successfully', 'success', 2, function(){ window.location.reload(); });
+              
 
                 }else if(res === "already"){
                  alertify.error("Name Exists Already");
@@ -437,8 +422,8 @@ alertify.set('notifier','position', 'top-right');
                 success:function(res){
                 
                 if(res==='success'){
-                    alertify.success("Deleted Successfully");
-                   window.location.reload();
+
+                   alertify.notify('Deleted Successfully', 'success', 2, function(){ window.location.reload(); });
                 }else{
                     alertify.error("Something went wrong");
                 }

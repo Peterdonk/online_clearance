@@ -15,6 +15,7 @@ header('Content-type: application/json; charset=UTF-8');
         $response['contact']  = $agentDetails['agent_contact'];
         $response['address']  = $agentDetails['agent_address'];
         $response['role']  = $agentDetails['agent_role'];
+       
 
         
         echo json_encode($response);

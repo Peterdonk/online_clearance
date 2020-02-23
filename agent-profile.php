@@ -4,12 +4,26 @@
 
 require_once 'db.php';
 
-$student_department = $_COOKIE['d'];
-$student_id = $_COOKIE['si'];
-
 if(!isset($_COOKIE['si'])){
- echo "<script>window.location.href='index.php';</script>";
+    echo '<script>window.location.href="index.php";</script>';
+}else{
+    $department = $_COOKIE['d'];
+$id = $_COOKIE['si']; //clearers secret ID
 }
+
+
+
+
+
+        $pid = $id;
+        $getAgentInfo = mysqli_query($connectionString,"SELECT * FROM clearing_agents WHERE `agent_secret_id`='$pid' LIMIT 1")or die(mysqli_error($connectionString));
+        $agentDetails = mysqli_fetch_array($getAgentInfo);  
+
+
+        $agent_name = $agentDetails['agent_name'];
+        $agent_contact  = $agentDetails['agent_contact'];
+        $agent_address  = $agentDetails['agent_address'];
+        $agent_role  = $agentDetails['agent_role'];
 
 
 ?>
@@ -20,7 +34,7 @@ if(!isset($_COOKIE['si'])){
 
     <head>
          <meta charset="utf-8" />
-        <title>Student | Online Clearance</title>
+        <title>Student Profile | Online Clearance</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="An online clearing system for Akim State College University" name="description" />
         <meta content="Themesdesign" name="author" />
@@ -41,6 +55,180 @@ if(!isset($_COOKIE['si'])){
         <!-- App Css-->
         <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
 
+
+        <style type="text/css">
+
+          .profile__group {
+    width: 100% !important;
+}
+            .profile{
+  box-sizing: border-box;
+  max-width: 380px;
+  padding-top: 40px;
+
+  font-family: "Roboto Condensed", "Arial", sans-serif;
+  font-size: 14px;
+  font-weight: 400;  
+  color: #222;
+  
+  background-color: #fff;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12), 0 3px 1px -2px rgba(0, 0, 0, .2);
+  text-align: center;
+  
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.profile:before{
+  content: "";
+  width: 85px;
+  height: 50px;
+
+  transition: transform .5s cubic-bezier(0.42, 0.04, 0.13, 0.92);
+  border-radius: 50%;
+  background-color: #15a251;
+
+  position: absolute;
+  top: -70px;
+  left: 50%;
+  z-index: -1;  
+  transform: translateX(-50%) scale(7);
+}
+
+.profile:hover:before{
+  transition: transform .7s cubic-bezier(0.66, 0.09, 0, 1.31);
+  transform: translateX(-50%) translateY(200%) scale(25);
+}
+
+.profile:hover, .profile:hover .profile__value, .profile:hover .profile__social{
+  color: #fff;
+
+}
+
+.profile:hover .profile__group, .profile:hover .profile__avatar{
+  border-color: #fff;
+}
+
+.profile:hover .profile__stats{
+  background-color: #0c7338;  
+}
+
+.profile__header{
+  transition: color .4s ease-out .1s;  
+}
+
+.profile__avatar{
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+
+  border: 6px solid #15a251;
+  transition: border-color .4s ease-out .1s;
+}
+
+.profile:hover .profile__avatar{
+  transition-delay: .2s;
+}
+
+.profile__name{
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-size: 30px;
+}
+
+.profile__stats{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;  
+
+  margin-top: 25px;
+  margin-bottom: 25px;  
+
+  background-color: #f0f0f0;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  transition: background-color .4s ease-out .1s;
+}
+
+.profile:hover .profile__stats{
+  transition-delay: .2s;
+}
+
+/*.profile__group{
+  box-sizing: border-box;
+  width: 33.3333333%;
+  transition: border-color .4s ease-out .1s;
+
+  border-right: 1px solid #BDBDBD;
+  padding-left: 2%;
+  padding-right: 2%;
+}
+
+profile:hover .profile__group{
+  transition-delay: .4s;
+}
+
+.profile__group:nth-child(n+4){
+  margin-top: 20px;
+}
+
+.profile__group:nth-child(3n+3){
+  border-right: none;
+}*/
+
+.profile__param, .profile__value{
+  display: block;
+  transition: color .4s ease-out .1s;
+}
+
+.profile__param{
+  text-transform: uppercase;
+}
+
+.profile__value{
+  font-size: 30px;
+  color: #15a251;
+  font-weight: 700;
+}
+
+.profile__socials{
+  padding-bottom: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile__social{
+  border: 2px solid currentColor;
+  color: #7B1FA2;
+  border-radius: 50%;
+  transition: color .4s ease-out .3s;
+  
+  margin-left: 10px;
+  margin-right: 10px;  
+  padding: 10px;
+  position: relative;
+}
+
+.profile__social-icon{
+  width: 18px;
+  height: 18px;
+  display: block;
+  fill: currentColor;
+}
+
+.profile__social-name{
+  position: absolute;
+  left: -9999px;
+}
+
+/*
+* demo styles
+*/
+
+        </style>
+
     </head>
 
     <body data-topbar="dark" data-layout="horizontal">
@@ -54,7 +242,7 @@ if(!isset($_COOKIE['si'])){
                     <div class="d-flex">
                         <!-- LOGO -->
                          <div class="navbar-brand-box">
-                            <a href="student-profile.php" class="logo logo-dark">
+                            <a href="agent-profile.php" class="logo logo-dark">
                                 <span class="logo-sm">
                                     <img src="assets/images/akim_state.gif" alt="" height="40">
                                 </span>
@@ -63,7 +251,7 @@ if(!isset($_COOKIE['si'])){
                                 </span>
                             </a>
 
-                            <a href="student-profile.php" class="logo logo-light">
+                            <a href="agent-profile.php" class="logo logo-light">
                                 <span class="logo-sm">
                                     <img src="assets/images/akim_state.gif" alt="" height="40">
                                 </span>
@@ -113,7 +301,7 @@ if(!isset($_COOKIE['si'])){
 
 
                   
-                      <div class="dropdown d-inline-block">
+                        <div class="dropdown d-inline-block">
                             <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img class="rounded-circle header-profile-user" src="assets/images/user_image.png"
@@ -123,7 +311,7 @@ if(!isset($_COOKIE['si'])){
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <!-- item-->
-                                <a class="dropdown-item" href="student-profile.php"><i class="mdi mdi-face-profile font-size-16 align-middle mr-1"></i> Profile</a>
+                                <a class="dropdown-item" href="agent-profile.php"><i class="mdi mdi-face-profile font-size-16 align-middle mr-1"></i> Profile</a>
                                
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="index.php"><i class="mdi mdi-logout font-size-16 align-middle mr-1"></i> Logout</a>
@@ -133,27 +321,21 @@ if(!isset($_COOKIE['si'])){
                 </div>
             </header>
 
-            <div class="topnav">
+           <div class="topnav">
                 <div class="container-fluid">
                     <nav class="navbar navbar-light navbar-expand-lg topnav-menu">
 
                         <div class="collapse navbar-collapse" id="topnav-menu-content">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="student-profile.php">
+                                    <a class="nav-link" href="agent-profile.php">
                                         <i class="mdi mdi-storefront mr-2"></i>Profile
                                     </a>
                                 </li>
 
                                  <li class="nav-item">
-                                    <a class="nav-link" href="students.php">
+                                    <a class="nav-link" href="processing.php">
                                         <i class="mdi mdi-storefront mr-2"></i>Clearance
-                                    </a>
-                                </li>
-
-                                 <li class="nav-item">
-                                    <a class="nav-link" href="print-clearance.php">
-                                        <i class="mdi mdi-storefront mr-2"></i>Print Clearance
                                     </a>
                                 </li>
 
@@ -183,7 +365,7 @@ if(!isset($_COOKIE['si'])){
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-flex align-items-center justify-content-between">
-                                    <h4 class="mb-0 font-size-18">Clearance</h4>
+                                    <h4 class="mb-0 font-size-18">Clearing Office Profile</h4>
 
                                    
                                     
@@ -198,116 +380,57 @@ if(!isset($_COOKIE['si'])){
 
                  
 
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="header-title mb-4">Clearance Form</h4>
-
-                                        <div class="table-responsive">
-                                            <table class="table table-centered table-nowrap mb-0">
-                                                <thead>
-                                                    <tr>
-                                                     
-                                                        <th scope="col">ID</th>
-                                                        <th scope="col">Office</th>
-                                                        <th scope="col">Status</th>
-                                                        <th scope="col">Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                
-
-
-                                                        <?php
-
-                                                        $counter = 1;
-                                                        $id_array = array();
-
-$get_student_clearance_form = mysqli_query($connectionString,"SELECT * FROM clearing_agents WHERE agent_department = '$student_department' OR agent_department = '0' ")or die(mysqli_error($connectionString));
-                                                        while ( $each_agent = mysqli_fetch_array($get_student_clearance_form)) {
-                                                            
-
-                                                            $agent_role = $each_agent['agent_role'];
-                                                            $agent_secret_id = $each_agent['agent_secret_id'];
-
-                                                            if(in_array($agent_secret_id, $id_array)){
-
-                                                            }else{
+                        <div class="row justify-content-center">
+                          
+                                        
 
 
 
-                                                            ?>
-<tr>
+                                        <div class="page">
+  <div class="page__container">
+    <article class="profile">
+      <header class="profile__header">
+        <img src="assets/images/user_image.png" class="profile__avatar" alt="avatar of Stas Melnikov">
+        <h3 class="profile__name"><?php echo $agent_name; ?></h3>
+        <span class="profile__post"><?php echo $agent_role; ?></span>
+      </header>
+      <div class="profile__stats">
 
-                                                        <td><b><?php echo $counter;   ?></b></td>
+         <div class="profile__group">
+          <span class="profile__value">Office</span>
+          <span class="profile__param">Type</span>
+        </div>   
 
 
-                                                        <?php    
+        <div class="profile__group">
+          <span class="profile__value"><?php echo $agent_contact; ?></span>
+          <span class="profile__param">Contact</span>
 
-                                                        //search for students presence
+        </div> 
 
-                                                        $check_presence = mysqli_query($connectionString,"SELECT * FROM cleared_students WHERE cleared_student_id = '$student_id' AND cleared_agent_id = '$agent_secret_id' LIMIT 1");
+        <div class="profile__group">
+          <span class="profile__value"><?php echo $agent_role; ?></span>
+          <span class="profile__param">Role</span>
+        </div>   
 
-                                                        if(mysqli_num_rows($check_presence) > 0){ 
+              
+      <!--   <div class="profile__group">
+          <span class="profile__value"><?php echo $agent_role; ?></span>
+          <span class="profile__param">Year Completed</span>
+        </div>   -->        
+             
+                            
+      </div>
+      <footer class="profile__socials">
+             <h3 class="profile__name"><?php echo $agent_address; ?></h3>              
+      </footer>
+    </article>
+  </div>
+</div>
 
 
 
 
-                                                            ?>
-
- <td><?php echo $agent_role; ?></td>
-<td>
-                                                            <i class="mdi mdi-checkbox-blank-circle text-success mr-1"></i> Cleared
-                                                        </td>
-
-                                                        <td>
-
-                                                        <button type="button" class="btn btn-outline-success btn-sm btn-view-officer" id="<?php echo $agent_secret_id; ?>">View Officer Info</button></td>
-
-
-<?php }else{ ?>
- <td><?php echo $agent_role; ?></td>
-<td>
-                                                            <i class="mdi mdi-checkbox-blank-circle text-warning mr-1"></i> Pending
-                                                        </td>
-
-                                                        <td>
-
-                                                        <button type="button" class="btn btn-outline-success btn-sm btn-view-officer" id="<?php echo $agent_secret_id; ?>">View Officer Info</button>
-
-                                                    </td>
-<?php } ?>
-
-
-
-
-
-
-                                                       
-                                                       
-                                                        <td>
-        
-       
-    </td>
-
-</tr>
-
-
-
-
-                                                <?php    $counter++;array_push($id_array, $agent_secret_id);  } }
-
-                                                        ?>
-
-
-                                                       
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <!-- end row -->
                         
@@ -316,58 +439,7 @@ $get_student_clearance_form = mysqli_query($connectionString,"SELECT * FROM clea
                 <!-- End Page-content -->
 
 
-                <!-- sample modal content -->
-<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header">
-<h5 class="modal-title mt-0" id="myModalLabel">Office Information</h5>
-<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-<span aria-hidden="true">&times;</span>
-</button>
-</div>
-<div class="modal-body">
 
-<table class="table table-hover table-bordered table-striped">
-    
-<thead>
-    <th class="font-weight-bold">Item</th>
-    <th class="font-weight-bold">Description</th>
-
-</thead>
-
-<tbody>
-    <tr>
-        <td>Name</td>
-        <td id="name"></td>
-    </tr>
-     <tr>
-        <td>Role</td>
-        <td id="role"></td>
-    </tr>
-     <tr>
-        <td>Contact</td>
-        <td id="contact"></td>
-    </tr>
-    
-     <tr>
-        <td>Address</td>
-        <td id="address"></td>
-    </tr>
-
-</tbody>
-
-</table>
-                                           
-                                            
-                                        
-</div>
-<div class="modal-footer">
-<button type="button" class="btn btn-outline-secondary waves-effect" data-dismiss="modal">Close</button>
-</div>
-</div><!-- /.modal-content -->
-</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 
                 
                  <?php  require_once 'footer.php'; ?>
@@ -404,39 +476,23 @@ $get_student_clearance_form = mysqli_query($connectionString,"SELECT * FROM clea
         <script src="assets/js/app.js"></script>
 
 
-        <script type="text/javascript">
-
-        $(document).ready(function(){
-
-
-            $(document).on('click','.btn-view-officer',function(e){
-
-                var id = $(this).attr('id');
-
-                  $.ajax({
-                url:'api_calls/get-officer-details.php',
-                type: 'POST',
-                data: {id:id},
-                success:function(res){
-                
-                $('#name').html(res.name);
-                $('#contact').html(res.contact);
-                $('#address').html(res.address);
-                $('#role').html(res.role);
-
-                $('#myModal').modal('show');
-            },
-                error:function(res){
-                    console.log(res);
-                }
-
-            });
+        <script>
+            
+            $(document).ready(function(){
+                $( ".profile" ).hover(
+                  function() {
+                    $('.profile__name').css({'color':'#fff'});
+                  }, function() {
+                    $('.profile__name').css({'color':'#495057'});
+                  }
+                );
             })
 
 
-
-        })            
         </script>
+
+
+      
 
 
 

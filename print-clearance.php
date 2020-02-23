@@ -4,15 +4,14 @@
 
 require_once 'db.php';
 
+$student_department = $_COOKIE['d'];
+$student_id = $_COOKIE['si'];
 
 if(!isset($_COOKIE['si'])){
-    echo '<script>window.location.href="index.php";</script>';
-}else{
-    $department = $_COOKIE['d'];
-$id = $_COOKIE['si']; //clearers secret ID
+ echo "<script>window.location.href='index.php';</script>";
 }
 
-
+echo "<script>window.print();</script>";
 
 
 ?>
@@ -22,7 +21,8 @@ $id = $_COOKIE['si']; //clearers secret ID
 <html lang="en">
 
     <head>
-        <title>Clearing Office | Online Clearance</title>
+         <meta charset="utf-8" />
+        <title>Student | Online Clearance</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="An online clearing system for Akim State College University" name="description" />
         <meta content="Themesdesign" name="author" />
@@ -35,12 +35,6 @@ $id = $_COOKIE['si']; //clearers secret ID
 
         <!-- jvectormap -->
         <link href="assets/libs/jqvmap/jqvmap.min.css" rel="stylesheet" />
-
-         <!-- alertifyjs Css -->
-        <link href="assets/libs/alertifyjs/build/css/alertify.min.css" rel="stylesheet" type="text/css" />
-
-        <!-- alertifyjs default themes  Css -->
-        <link href="assets/libs/alertifyjs/build/css/themes/default.min.css" rel="stylesheet" type="text/css" />
 
         <!-- Bootstrap Css -->
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -62,7 +56,7 @@ $id = $_COOKIE['si']; //clearers secret ID
                     <div class="d-flex">
                         <!-- LOGO -->
                          <div class="navbar-brand-box">
-                            <a href="agent-profile.php" class="logo logo-dark">
+                            <a href="student-profile.php" class="logo logo-dark">
                                 <span class="logo-sm">
                                     <img src="assets/images/akim_state.gif" alt="" height="40">
                                 </span>
@@ -71,7 +65,7 @@ $id = $_COOKIE['si']; //clearers secret ID
                                 </span>
                             </a>
 
-                            <a href="agent-profile.php" class="logo logo-light">
+                            <a href="student-profile.php" class="logo logo-light">
                                 <span class="logo-sm">
                                     <img src="assets/images/akim_state.gif" alt="" height="40">
                                 </span>
@@ -131,7 +125,7 @@ $id = $_COOKIE['si']; //clearers secret ID
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <!-- item-->
-                                <a class="dropdown-item" href="agent-profile.php"><i class="mdi mdi-face-profile font-size-16 align-middle mr-1"></i> Profile</a>
+                                <a class="dropdown-item" href="student-profile.php"><i class="mdi mdi-face-profile font-size-16 align-middle mr-1"></i> Profile</a>
                                
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="index.php"><i class="mdi mdi-logout font-size-16 align-middle mr-1"></i> Logout</a>
@@ -141,21 +135,27 @@ $id = $_COOKIE['si']; //clearers secret ID
                 </div>
             </header>
 
-           <div class="topnav">
+            <div class="topnav">
                 <div class="container-fluid">
                     <nav class="navbar navbar-light navbar-expand-lg topnav-menu">
 
                         <div class="collapse navbar-collapse" id="topnav-menu-content">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="agent-profile.php">
+                                    <a class="nav-link" href="student-profile.php">
                                         <i class="mdi mdi-storefront mr-2"></i>Profile
                                     </a>
                                 </li>
 
                                  <li class="nav-item">
-                                    <a class="nav-link" href="processing.php">
+                                    <a class="nav-link" href="students.php">
                                         <i class="mdi mdi-storefront mr-2"></i>Clearance
+                                    </a>
+                                </li>
+
+                                 <li class="nav-item">
+                                    <a class="nav-link" href="print-clearance.php">
+                                        <i class="mdi mdi-storefront mr-2"></i>Print Clearance
                                     </a>
                                 </li>
 
@@ -187,7 +187,7 @@ $id = $_COOKIE['si']; //clearers secret ID
                                 <div class="page-title-box d-flex align-items-center justify-content-between">
                                     <h4 class="mb-0 font-size-18">Clearance</h4>
 
-                                    
+                                   
                                     
                                 </div>
                             </div>
@@ -198,13 +198,13 @@ $id = $_COOKIE['si']; //clearers secret ID
 
                     
 
-                 <input type="hidden" name="" id="clearer_id" value="<?php echo $id;  ?>">
+                 
 
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="header-title mb-4">Student List</h4>
+                                        <h4 class="header-title mb-4">Clearance Form</h4>
 
                                         <div class="table-responsive">
                                             <table class="table table-centered table-nowrap mb-0">
@@ -212,14 +212,9 @@ $id = $_COOKIE['si']; //clearers secret ID
                                                     <tr>
                                                      
                                                         <th scope="col">ID</th>
-                                                        <th scope="col">Name</th>
-                                                        <th scope="col">Index</th>
-                                                        <th scope="col">Department</th>
-                                                        <th scope="col">Programme</th>
-                                                        <th scope="col">Started</th>
-                                                        <th scope="col">Completed</th>
+                                                        <th scope="col">Office</th>
                                                         <th scope="col">Status</th>
-                                                        <th scope="col">Action</th>
+                                                       
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -229,38 +224,32 @@ $id = $_COOKIE['si']; //clearers secret ID
                                                         <?php
 
                                                         $counter = 1;
-                                                       
+                                                        $id_array = array();
 
-$get_students = mysqli_query($connectionString,"SELECT * FROM student_tbl join departments_tbl on student_tbl.student_department = departments_tbl.department_id join programmes_tbl on student_tbl.student_program = programmes_tbl.programmes_id WHERE student_department = '$department' ")or die(mysqli_error($connectionString));
-                                                        while ( $each_student = mysqli_fetch_array($get_students)) {
+$get_student_clearance_form = mysqli_query($connectionString,"SELECT * FROM clearing_agents WHERE agent_department = '$student_department' OR agent_department = '0' ")or die(mysqli_error($connectionString));
+                                                        while ( $each_agent = mysqli_fetch_array($get_student_clearance_form)) {
                                                             
 
-                                            $student_id = $each_student['student_id'];
-                                            $student_name = $each_student['student_name'];
-                                            $student_index = $each_student['student_index'];
-                                            $student_department = $each_student['department_name'];
-                                            $student_programme = $each_student['programmes_name'];
-                                            $student_started = $each_student['student_year_registered'];
-                                            $student_completed = $each_student['student_year_completed'];
+                                                            $agent_role = $each_agent['agent_role'];
+                                                            $agent_secret_id = $each_agent['agent_secret_id'];
+
+                                                            if(in_array($agent_secret_id, $id_array)){
+
+                                                            }else{
+
 
 
                                                             ?>
 <tr>
 
-                                                <td><?php echo $counter; ?></td>
-                                                <td><?php echo $student_name; ?></td>
-                                                <td><?php echo $student_index; ?></td>
-                                                <td><?php echo $student_department; ?></td>
-                                                <td><?php echo $student_programme;  ?></td>
-                                                <td><?php echo $student_started;  ?></td>
-                                                <td><?php echo $student_completed;  ?></td>
+                                                        <td><b><?php echo $counter;   ?></b></td>
 
 
                                                         <?php    
 
                                                         //search for students presence
 
-                                                        $check_presence = mysqli_query($connectionString,"SELECT * FROM cleared_students WHERE cleared_student_id = '$student_id' AND cleared_agent_id = '$id' LIMIT 1");
+                                                        $check_presence = mysqli_query($connectionString,"SELECT * FROM cleared_students WHERE cleared_student_id = '$student_id' AND cleared_agent_id = '$agent_secret_id' LIMIT 1");
 
                                                         if(mysqli_num_rows($check_presence) > 0){ 
 
@@ -269,26 +258,21 @@ $get_students = mysqli_query($connectionString,"SELECT * FROM student_tbl join d
 
                                                             ?>
 
-
+ <td><?php echo $agent_role; ?></td>
 <td>
-                                                            <i class="mdi mdi-checkbox-blank-circle text-success mr-1"></i> Complete
+                                                            <i class="mdi mdi-checkbox-blank-circle text-success mr-1"></i> Cleared
                                                         </td>
 
-                                                        <td>
-
-                                                        <button type="button" class="btn btn-outline-danger btn-sm btn-unclear" id="<?php echo $student_id; ?>">Undo Action</button></td>
+                                                        
 
 
 <?php }else{ ?>
+ <td><?php echo $agent_role; ?></td>
 <td>
                                                             <i class="mdi mdi-checkbox-blank-circle text-warning mr-1"></i> Pending
                                                         </td>
 
-                                                        <td>
-
-                                                        <button type="button" class="btn btn-outline-success btn-sm btn-clear" id="<?php echo $student_id; ?>"> Clear Student</button>
-
-                                                    </td>
+                                                      
 <?php } ?>
 
 
@@ -298,17 +282,14 @@ $get_students = mysqli_query($connectionString,"SELECT * FROM student_tbl join d
 
                                                        
                                                        
-                                                        <td>
-        
-       
-    </td>
+                                                      
 
 </tr>
 
 
 
 
-                                                <?php    $counter++; }
+                                                <?php    $counter++;array_push($id_array, $agent_secret_id);  } }
 
                                                         ?>
 
@@ -328,59 +309,6 @@ $get_students = mysqli_query($connectionString,"SELECT * FROM student_tbl join d
                 <!-- End Page-content -->
 
 
-                <!-- sample modal content -->
-<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header">
-<h5 class="modal-title mt-0" id="myModalLabel">Office Information</h5>
-<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-<span aria-hidden="true">&times;</span>
-</button>
-</div>
-<div class="modal-body">
-
-<table class="table table-hover table-bordered table-striped">
-    
-<thead>
-    <th class="font-weight-bold">Item</th>
-    <th class="font-weight-bold">Description</th>
-
-</thead>
-
-<tbody>
-    <tr>
-        <td>Name</td>
-        <td id="name"></td>
-    </tr>
-     <tr>
-        <td>Role</td>
-        <td id="role"></td>
-    </tr>
-     <tr>
-        <td>Contact</td>
-        <td id="contact"></td>
-    </tr>
-    
-     <tr>
-        <td>Address</td>
-        <td id="address"></td>
-    </tr>
-
-</tbody>
-
-</table>
-                                           
-                                            
-                                        
-</div>
-<div class="modal-footer">
-<button type="button" class="btn btn-outline-secondary waves-effect" data-dismiss="modal">Close</button>
-</div>
-</div><!-- /.modal-content -->
-</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
                 
                  <?php  require_once 'footer.php'; ?>
 
@@ -396,25 +324,22 @@ $get_students = mysqli_query($connectionString,"SELECT * FROM student_tbl join d
         <div class="rightbar-overlay"></div>
 
         <!-- JAVASCRIPT -->
-         <script src="assets/libs/jquery/jquery.min.js"></script>
+        <script src="assets/libs/jquery/jquery.min.js"></script>
         <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="assets/libs/metismenu/metisMenu.min.js"></script>
         <script src="assets/libs/simplebar/simplebar.min.js"></script>
         <script src="assets/libs/node-waves/waves.min.js"></script>
 
-      
+        <!-- apexcharts -->
+        <script src="assets/libs/apexcharts/apexcharts.min.js"></script>
 
         <script src="assets/libs/slick-slider/slick/slick.min.js"></script>
 
         <!-- Jq vector map -->
         <script src="assets/libs/jqvmap/jquery.vmap.min.js"></script>
         <script src="assets/libs/jqvmap/maps/jquery.vmap.usa.js"></script>
-        <!-- <script src="assets/js/pages/dashboard.init.js"></script> -->
 
-                 <script src="assets/libs/alertifyjs/build/alertify.min.js"></script>
-
-        <script src="assets/js/pages/alertifyjs.init.js"></script>
-
+        <script src="assets/js/pages/dashboard.init.js"></script>
 
         <script src="assets/js/app.js"></script>
 
@@ -423,69 +348,29 @@ $get_students = mysqli_query($connectionString,"SELECT * FROM student_tbl join d
 
         $(document).ready(function(){
 
-             alertify.set('notifier','position', 'top-right');
 
+            $(document).on('click','.btn-view-officer',function(e){
 
-            $(document).on('click','.btn-clear',function(e){
                 var id = $(this).attr('id');
-                var clearer = $("#clearer_id").val();
-                alertify.confirm("Are You Sure Want To Clear This Student",
-                  function(){
-                    $.ajax({
-                url:'api_calls/clear-student.php',
+
+                  $.ajax({
+                url:'api_calls/get-officer-details.php',
                 type: 'POST',
-                data: {id:id,clearer:clearer},
+                data: {id:id},
                 success:function(res){
                 
-                if(res==='success'){
-                    
-                    alertify.notify('Student Cleared Successfully', 'success', 2, function(){ window.location.reload()});
-                }else{
-                    alertify.error("Something went wrong");
-                }
-                
+                $('#name').html(res.name);
+                $('#contact').html(res.contact);
+                $('#address').html(res.address);
+                $('#role').html(res.role);
+
+                $('#myModal').modal('show');
             },
                 error:function(res){
                     console.log(res);
                 }
 
             });
-                  },
-                  function(){
-                   
-                  }).set('labels', {ok:'Yes, Approve', cancel:'Not Today'}).set('movable','true').setHeader('Clear Student');
-            })
-
-
-
-
-            $(document).on('click','.btn-unclear',function(e){
-                var id = $(this).attr('id');
-                var clearer = $("#clearer_id").val();
-                alertify.confirm("Are You Sure Want To Undo Your Previous Action..?",
-                  function(){
-                    $.ajax({
-                url:'api_calls/unclear-student.php',
-                type: 'POST',
-                data: {id:id,clearer:clearer},
-                success:function(res){
-                
-                if(res==='success'){
-                    alertify.notify('Student Uncleared Successfully', 'success', 2, function(){ window.location.reload()});
-                }else{
-                    alertify.error("Something went wrong");
-                }
-                
-            },
-                error:function(res){
-                    console.log(res);
-                }
-
-            });
-                  },
-                  function(){
-                   
-                  }).set('labels', {ok:'Yes, Undo Action', cancel:'Not Today'}).set('movable','true').setHeader('Unclear Student');
             })
 
 

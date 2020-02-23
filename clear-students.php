@@ -8,7 +8,7 @@ require_once 'db.php';
 if(!isset($_COOKIE['si'])){
     echo '<script>window.location.href="index.php";</script>';
 }else{
-    $department = $_COOKIE['d'];
+    $department = $_GET['d'];
 $id = $_COOKIE['si']; //clearers secret ID
 }
 

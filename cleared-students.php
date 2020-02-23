@@ -13,7 +13,7 @@ if(isset($_GET['d'])){
 
     <head>
         <meta charset="utf-8" />
-        <title>Student List | Online Clearance</title>
+        <title>Cleared Student List | Online Clearance</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="An online clearing system for Akim State College University" name="description" />
         <meta content="Themesdesign" name="author" />
@@ -91,7 +91,7 @@ if(isset($_GET['d'])){
                                                         <th scope="col">Contact</th>
                                                         <th scope="col">Registered</th>
                                                         <th scope="col">Completed</th>
-                                                        <th scope="col">Password</th>
+                                                       
                                        
                                                     </tr>
                                                 </thead>
@@ -110,9 +110,40 @@ while($eachStudent= mysqli_fetch_array($getStudents)){
     $get_student_registered = $eachStudent['student_year_registered'];
     $get_student_completed = $eachStudent['student_year_completed'];
     $get_student_password = $eachStudent['student_pass'];
+    $get_student_department_raw = $eachStudent['student_department'];
 
-   ?>
-    <tr>
+    //check people decided to clear the student
+    $check_clearers = mysqli_query($connectionString,"SELECT * FROM clearing_agents WHERE agent_department = '$get_student_department_raw' OR agent_department = '0'")or die(mysqli_error($connectionString));
+
+    $get_total_department = mysqli_num_rows($check_clearers);
+
+
+    // echo($get_total_department);
+
+    $student_program_counter = 0;
+
+    while($each_office = mysqli_fetch_array($check_clearers)){
+        $get_agent_secret_id = $each_office['agent_secret_id'];
+
+        //Check through cleared table to see if he has finished his clearing
+
+        $check_cleared = mysqli_query($connectionString,"SELECT * FROM cleared_students WHERE cleared_student_id = '$get_student_Id' AND cleared_agent_id = '$get_agent_secret_id' ")or die(mysqli_error($connectionString));
+
+            // $program_details = mysqli_fetch_array($check_cleared);
+
+            // echo $program_details['cleared_agent_id'];
+
+        if(mysqli_num_rows($check_cleared) > 0){
+            $student_program_counter+=1;
+        }  
+
+    }
+
+    // echo "  Program==>".$student_program_counter;
+
+    if( $student_program_counter === $get_total_department){  ?>
+
+ <tr>
     <td><b><?php echo $counter;   ?></b></td>
     <td><?php echo $get_student_name;  ?></td>
     <td><?php echo $get_student_index;  ?></td>
@@ -121,11 +152,15 @@ while($eachStudent= mysqli_fetch_array($getStudents)){
     <td><?php echo $get_student_contact;  ?></td>
     <td><?php echo $get_student_registered;  ?></td>
     <td><?php echo $get_student_completed;  ?></td>
-    <td><?php echo $get_student_password;  ?></td>
 </tr>
 
 
-<?php $counter++; }
+   <?php  $counter++; } ?>
+
+  
+   
+
+<?php  }
 ?>
                                        
                                                         

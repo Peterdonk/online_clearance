@@ -185,7 +185,7 @@ $id = $_COOKIE['si']; //clearers secret ID
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-flex align-items-center justify-content-between">
-                                    <h4 class="mb-0 font-size-18">Clearance</h4>
+                                    <h4 class="mb-0 font-size-18">Clearance By Department</h4>
 
                                     
                                     
@@ -204,119 +204,75 @@ $id = $_COOKIE['si']; //clearers secret ID
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="header-title mb-4">Student List</h4>
+                                        <h4 class="header-title mb-4">Select Department</h4>
 
-                                        <div class="table-responsive">
-                                            <table class="table table-centered table-nowrap mb-0">
+                                       
+ <div class="table-responsive">
+                                            <table class="table table-centered table-nowrap mb-0 table-hover">
                                                 <thead>
                                                     <tr>
-                                                     
                                                         <th scope="col">ID</th>
-                                                        <th scope="col">Name</th>
-                                                        <th scope="col">Index</th>
-                                                        <th scope="col">Department</th>
-                                                        <th scope="col">Programme</th>
-                                                        <th scope="col">Started</th>
-                                                        <th scope="col">Completed</th>
+                                                        <th scope="col">Department Name</th>
                                                         <th scope="col">Status</th>
-                                                        <th scope="col">Action</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-                                                
+                                                <tbody class="loadTable">
+                                                   
+         
+<?php   
+$counter = 1;
 
 
-                                                        <?php
-
-                                                        $counter = 1;
-                                                       
-
-$get_students = mysqli_query($connectionString,"SELECT * FROM student_tbl join departments_tbl on student_tbl.student_department = departments_tbl.department_id join programmes_tbl on student_tbl.student_program = programmes_tbl.programmes_id WHERE student_department = '$department' ")or die(mysqli_error($connectionString));
-                                                        while ( $each_student = mysqli_fetch_array($get_students)) {
-                                                            
-
-                                            $student_id = $each_student['student_id'];
-                                            $student_name = $each_student['student_name'];
-                                            $student_index = $each_student['student_index'];
-                                            $student_department = $each_student['department_name'];
-                                            $student_programme = $each_student['programmes_name'];
-                                            $student_started = $each_student['student_year_registered'];
-                                            $student_completed = $each_student['student_year_completed'];
+$check_if_single_all = mysqli_query($connectionString,"SELECT * FROM clearing_agents JOIN departments_tbl on clearing_agents.agent_department = departments_tbl.department_id WHERE agent_secret_id = '$id'")or die(mysqli_error($connectionString));
 
 
-                                                            ?>
-<tr>
+    
+if(mysqli_num_rows($check_if_single_all) > 1){
 
-                                                <td><?php echo $counter; ?></td>
-                                                <td><?php echo $student_name; ?></td>
-                                                <td><?php echo $student_index; ?></td>
-                                                <td><?php echo $student_department; ?></td>
-                                                <td><?php echo $student_programme;  ?></td>
-                                                <td><?php echo $student_started;  ?></td>
-                                                <td><?php echo $student_completed;  ?></td>
+while ($eachDepartment = mysqli_fetch_array($check_if_single_all)) {
 
-
-                                                        <?php    
-
-                                                        //search for students presence
-
-                                                        $check_presence = mysqli_query($connectionString,"SELECT * FROM cleared_students WHERE cleared_student_id = '$student_id' AND cleared_agent_id = '$id' LIMIT 1");
-
-                                                        if(mysqli_num_rows($check_presence) > 0){ 
-
-
-
-
-                                                            ?>
-
-
-<td>
-                                                            <i class="mdi mdi-checkbox-blank-circle text-success mr-1"></i> Complete
-                                                        </td>
-
-                                                        <td>
-
-                                                        <button type="button" class="btn btn-outline-danger btn-sm btn-unclear" id="<?php echo $student_id; ?>">Undo Action</button></td>
-
-
-<?php }else{ ?>
-<td>
-                                                            <i class="mdi mdi-checkbox-blank-circle text-warning mr-1"></i> Pending
-                                                        </td>
-
-                                                        <td>
-
-                                                        <button type="button" class="btn btn-outline-success btn-sm btn-clear" id="<?php echo $student_id; ?>"> Clear Student</button>
-
-                                                    </td>
-<?php } ?>
-
-
-
-
-
-
-                                                       
-                                                       
-                                                        <td>
-        
-       
-    </td>
-
+    $department_name = $eachDepartment['department_name'];
+    $department_id = $eachDepartment['department_id'];
+   ?>
+    <tr>
+    <td><b><?php echo $counter;   ?></b></td>
+    <td><a href='clear-students.php?d=<?php echo $department_id; ?>'><?php echo $department_name; ?></td>                                                                          
 </tr>
 
 
+<?php $counter++; }
+
+}else{
 
 
-                                                <?php    $counter++; }
+$getDepartments = mysqli_query($connectionString,"SELECT * FROM departments_tbl ORDER BY department_id ASC")or die(mysqli_error($connectionString));
+while($eachDepartment = mysqli_fetch_array($getDepartments)){  
+    $get_department_Id = $eachDepartment['department_id'];
+    $get_department_name = $eachDepartment['department_name'];
+    $get_department_timestamp = $eachDepartment['department_timestamp'];
+   ?>
+    <tr>
+    <td><b><?php echo $counter;   ?></b></td>
+    <td><a href='student-list.php?d=<?php echo $get_department_Id; ?>'><?php echo $get_department_name; ?></td>                                                                          
+</tr>
 
-                                                        ?>
 
+<?php $counter++; }
 
-                                                       
+}
+?>
+                                       
+                                                        
+                                                      
+                                                        
+                                                  
+                                                 
                                                 </tbody>
                                             </table>
                                         </div>
+
+
+
                                     </div>
                                 </div>
                             </div>
@@ -329,57 +285,6 @@ $get_students = mysqli_query($connectionString,"SELECT * FROM student_tbl join d
 
 
                 <!-- sample modal content -->
-<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header">
-<h5 class="modal-title mt-0" id="myModalLabel">Office Information</h5>
-<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-<span aria-hidden="true">&times;</span>
-</button>
-</div>
-<div class="modal-body">
-
-<table class="table table-hover table-bordered table-striped">
-    
-<thead>
-    <th class="font-weight-bold">Item</th>
-    <th class="font-weight-bold">Description</th>
-
-</thead>
-
-<tbody>
-    <tr>
-        <td>Name</td>
-        <td id="name"></td>
-    </tr>
-     <tr>
-        <td>Role</td>
-        <td id="role"></td>
-    </tr>
-     <tr>
-        <td>Contact</td>
-        <td id="contact"></td>
-    </tr>
-    
-     <tr>
-        <td>Address</td>
-        <td id="address"></td>
-    </tr>
-
-</tbody>
-
-</table>
-                                           
-                                            
-                                        
-</div>
-<div class="modal-footer">
-<button type="button" class="btn btn-outline-secondary waves-effect" data-dismiss="modal">Close</button>
-</div>
-</div><!-- /.modal-content -->
-</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 
                 
                  <?php  require_once 'footer.php'; ?>
@@ -419,81 +324,7 @@ $get_students = mysqli_query($connectionString,"SELECT * FROM student_tbl join d
         <script src="assets/js/app.js"></script>
 
 
-        <script type="text/javascript">
-
-        $(document).ready(function(){
-
-             alertify.set('notifier','position', 'top-right');
-
-
-            $(document).on('click','.btn-clear',function(e){
-                var id = $(this).attr('id');
-                var clearer = $("#clearer_id").val();
-                alertify.confirm("Are You Sure Want To Clear This Student",
-                  function(){
-                    $.ajax({
-                url:'api_calls/clear-student.php',
-                type: 'POST',
-                data: {id:id,clearer:clearer},
-                success:function(res){
-                
-                if(res==='success'){
-                    
-                    alertify.notify('Student Cleared Successfully', 'success', 2, function(){ window.location.reload()});
-                }else{
-                    alertify.error("Something went wrong");
-                }
-                
-            },
-                error:function(res){
-                    console.log(res);
-                }
-
-            });
-                  },
-                  function(){
-                   
-                  }).set('labels', {ok:'Yes, Approve', cancel:'Not Today'}).set('movable','true').setHeader('Clear Student');
-            })
-
-
-
-
-            $(document).on('click','.btn-unclear',function(e){
-                var id = $(this).attr('id');
-                var clearer = $("#clearer_id").val();
-                alertify.confirm("Are You Sure Want To Undo Your Previous Action..?",
-                  function(){
-                    $.ajax({
-                url:'api_calls/unclear-student.php',
-                type: 'POST',
-                data: {id:id,clearer:clearer},
-                success:function(res){
-                
-                if(res==='success'){
-                    alertify.notify('Student Uncleared Successfully', 'success', 2, function(){ window.location.reload()});
-                }else{
-                    alertify.error("Something went wrong");
-                }
-                
-            },
-                error:function(res){
-                    console.log(res);
-                }
-
-            });
-                  },
-                  function(){
-                   
-                  }).set('labels', {ok:'Yes, Undo Action', cancel:'Not Today'}).set('movable','true').setHeader('Unclear Student');
-            })
-
-
-
-        })            
-        </script>
-
-
+       
 
     </body>
 </html>

@@ -151,6 +151,7 @@
                                                         <th scope="col">Departments</th>
                                                         <th scope="col">Role</th>
                                                         <th scope="col">Address</th>
+                                                        <th scope="col">Username</th>
                                                         <th scope="col">Password</th>
                                                         <th scope="col">Action</th>
                                                     </tr>
@@ -243,6 +244,24 @@
                                                         Looks good!
                                                     </div>
                                                 </div>
+
+
+                                                 <div class="col-md-12 mb-3">
+                                                    <label for="edit-username">Username</label>
+                                                   <input placeholder="Username" id="edit-username" name="username" class="form-control" required readonly>
+                                                    <div class="valid-feedback">
+                                                        Looks good!
+                                                    </div>
+                                                </div>
+
+
+                                                 <div class="col-md-12 mb-3">
+                                                    <label for="edit-password">Password</label>
+                                                   <input placeholder="password" id="edit-password" name="password" class="form-control" required>
+                                                    <div class="valid-feedback">
+                                                        Looks good!
+                                                    </div>
+                                                </div>
                                                
                                               
                                             </div>                                     
@@ -312,6 +331,8 @@
                 success:function(res){
                 
                 if(res === "success"){
+                    $('#add-agent').trigger("reset");
+                    $('#select2,#select22').trigger('change');
          
               alertify.success("Added Successfully");
               fetchAgents();
@@ -382,6 +403,8 @@
                 
                 $('#edit-name').val(res.name);
                 $('#edit-contact').val(res.contact);
+                $('#edit-username').val(res.username);
+                $('#edit-password').val(res.password);
                 $('#edit-address').html(res.address);
                 $('#edit-role').val(res.role);
                 $('#select22').val(departments_array).trigger('change');

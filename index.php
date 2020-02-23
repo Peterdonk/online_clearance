@@ -110,16 +110,16 @@
                 
                 if(res === "office"){
                 
-                window.location.href='agents.php';
+                window.location.href='agent-profile.php';
 
                 }else if(res === "not_exist"){
                 $('#error-show').show();
                 $('.spinner-border').hide();
                 
                 }else if(res === "student"){
-                    window.location.href='students.php';
+                    window.location.href='student-profile.php';
                 }else if(res === "admin"){
-                    window.location.href='add-programme.php'
+                    window.location.href='dashboard.php'
                 }
             },
                 error:function(res){

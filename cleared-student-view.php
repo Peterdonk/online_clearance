@@ -3,6 +3,7 @@
 <html lang="en">
 
     <head>
+         <meta charset="utf-8" />
         <title>View Students | Online Clearance</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="An online clearing system for Akim State College University" name="description" />
@@ -46,9 +47,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-flex align-items-center justify-content-between">
-                                    <h4 class="mb-0 font-size-18">View Students By Department</h4>
-
-                                  
+                                    <h4 class="mb-0 font-size-18">View Cleared Students By Department</h4>
                                     
                                 </div>
                             </div>
@@ -63,7 +62,7 @@
                                         <h4 class="header-title mb-4">All Departments</h4>
 
                                         <div class="table-responsive">
-                                            <table class="table table-striped table-centered table-nowrap mb-0 table-hover">
+                                            <table class="table table-centered table-nowrap mb-0 table-hover">
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">ID</th>
@@ -83,7 +82,7 @@ while($eachDepartment = mysqli_fetch_array($getDepartments)){
    ?>
     <tr>
     <td><b><?php echo $counter;   ?></b></td>
-    <td><a href='edit-students.php?d=<?php echo $get_department_Id; ?>'><?php echo $get_department_name; ?></td>                                                                          
+    <td><a href='cleared-students.php?d=<?php echo $get_department_Id; ?>'><?php echo $get_department_name; ?></td>                                                                          
 </tr>
 
 
@@ -120,9 +119,8 @@ while($eachDepartment = mysqli_fetch_array($getDepartments)){
 
 
                 
-                  <?php  require_once 'footer.php'; ?>
-
-
+             <?php  require_once 'footer.php'; ?>
+             
             </div>
             <!-- end main content-->
 

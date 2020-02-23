@@ -34,6 +34,8 @@ header('Content-type: application/json; charset=UTF-8');
         $response['address']  = $agentDetails['agent_address'];
         $response['role']  = $agentDetails['agent_role'];
         $response['department'] = $my_departments;
+         $response['username']  = $agentDetails['agent_username'];
+        $response['password']  = $agentDetails['agent_password'];
 
         
         echo json_encode($response);

@@ -17,6 +17,7 @@ while($eachAgent = mysqli_fetch_array($getAgents)){
     $get_department = $eachAgent['agent_department'];
     $get_role = $eachAgent['agent_role'];
     $get_password = $eachAgent['agent_password'];
+    $get_username = $eachAgent['agent_username'];
 
 
 if(in_array($get_secret_id, $secret_id_array)){
@@ -48,8 +49,11 @@ if(mysqli_num_rows($check_for_multiple) > 1){
 }else{
     if($get_department==='0'){ ?>
 <span class="badge badge-primary"><?php  echo 'All'; ?></span>
-        <?php }else{ ?>
-<span class="badge badge-primary"><?php  echo $department_name; ?></span>
+        <?php }else{ 
+
+$get_department_name = mysqli_fetch_array($check_for_multiple);
+            ?>
+<span class="badge badge-primary"><?php  echo $get_department_name['department_name']; ?></span>
       <?php  }  
 }
 
@@ -60,6 +64,8 @@ if(mysqli_num_rows($check_for_multiple) > 1){
 
     <td><?php echo $get_address;  ?></td>
 
+
+    <td><?php echo $get_username;  ?></td>
     <td><?php echo $get_password;  ?></td>
 
     <td>

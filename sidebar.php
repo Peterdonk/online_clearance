@@ -4,7 +4,7 @@
                     <div class="d-flex">
                         <!-- LOGO -->
                         <div class="navbar-brand-box">
-                            <a href="index.html" class="logo logo-dark">
+                            <a href="dashboard.php" class="logo logo-dark">
                                 <span class="logo-sm">
                                     <img src="assets/images/akim_state.gif" alt="" height="40">
                                 </span>
@@ -13,7 +13,7 @@
                                 </span>
                             </a>
 
-                            <a href="index.html" class="logo logo-light">
+                            <a href="dashboard.php" class="logo logo-light">
                                 <span class="logo-sm">
                                     <img src="assets/images/akim_state.gif" alt="" height="40">
                                 </span>
@@ -77,7 +77,7 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <!-- item-->
-                                <a class="dropdown-item" href="#"><i class="mdi mdi-face-profile font-size-16 align-middle mr-1"></i> Profile</a>
+                               
                                
                                 <a class="dropdown-item" href="index.php"><i class="mdi mdi-logout font-size-16 align-middle mr-1"></i> Logout</a>
                             </div>
@@ -107,29 +107,29 @@
             <li class="menu-title">Menu</li>
 
             <li>
-                <a href="index.html" class="waves-effect">
-                    <i class="mdi mdi-view-dashboard"></i><span class="badge badge-pill badge-success float-right">3</span>
+                <a href="dashboard.php" class="waves-effect">
+                    <i class="mdi mdi-monitor-dashboard"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
 
             <li>
                 <a href="add-programme.php" class=" waves-effect">
-                    <i class="mdi mdi-calendar-month"></i>
+                    <i class="mdi mdi-book-plus-multiple"></i>
                     <span>Programme</span>
                 </a>
             </li>
 
             <li>
                 <a href="add-department.php" class=" waves-effect">
-                    <i class="mdi mdi-calendar-month"></i>
+                    <i class="mdi mdi-home-city"></i>
                     <span>Department</span>
                 </a>
             </li>
 
             <li>
                 <a href="add-clearer.php" class=" waves-effect">
-                    <i class="mdi mdi-calendar-month"></i>
+                    <i class="mdi mdi-hospital-building"></i>
                     <span>Clearing Office</span>
                 </a>
             </li>
@@ -137,7 +137,7 @@
 
             <li>
                 <a href="javascript: void(0);" class="has-arrow waves-effect">
-                    <i class="mdi mdi-email-multiple-outline"></i>
+                    <i class="mdi mdi-account-multiple"></i>
                     <span>Student</span>
                 </a>
                 <ul class="sub-menu" aria-expanded="false">
@@ -146,6 +146,19 @@
                     <li><a href="view-edit-students.php">Manage Student</a></li>
                 </ul>
             </li>
+
+
+             <li>
+                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                    <i class="mdi mdi-file-document"></i>
+                    <span>Reports</span>
+                </a>
+                <ul class="sub-menu" aria-expanded="false">
+                    <li><a href="cleared-student-view.php">Cleared Students</a></li>
+                    <li><a href="uncleared-student-view.php">Uncleared Student</a></li>
+                </ul>
+            </li>
+
 
             <li>
                 <a href="index.php" class=" waves-effect">

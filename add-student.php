@@ -3,13 +3,13 @@
 <html lang="en">
 
     <head>
-        <meta charset="utf-8" />
-        <title>Form Validation | Apaxy - Responsive Bootstrap 4 Admin Dashboard</title>
+         <meta charset="utf-8" />
+        <title>Add Student | Online Clearance</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+        <meta content="An online clearing system for Akim State College University" name="description" />
         <meta content="Themesdesign" name="author" />
         <!-- App favicon -->
-        <link rel="shortcut icon" href="assets/images/favicon.ico">
+        <link rel="shortcut icon" href="assets/images/akim_state.gif">
 
          <!-- alertifyjs Css -->
         <link href="assets/libs/alertifyjs/build/css/alertify.min.css" rel="stylesheet" type="text/css" />
@@ -49,13 +49,7 @@
                                 <div class="page-title-box d-flex align-items-center justify-content-between">
                                     <h4 class="mb-0 font-size-18">Students</h4>
 
-                                    <div class="page-title-right">
-                                        <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Apaxy</a></li>
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Forms</a></li>
-                                            <li class="breadcrumb-item active">Form Validation</li>
-                                        </ol>
-                                    </div>
+                                  
                                     
                                 </div>
                             </div>
@@ -115,7 +109,7 @@
 
                                                   <div class="col-md-6 mb-3">
                                                     <label for="department">Programme</label>
-                                                  <select class="form-control" id="department" name="programme">
+                                                  <select class="form-control" id="programme" name="programme">
                                                       
                                                     <?php 
 
@@ -224,26 +218,13 @@
 
 
 
-
+ <?php  require_once 'footer.php'; ?>
 
 
 
 
                 
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                2019 © Apaxy.
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="text-sm-right d-none d-sm-block">
-                                    Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
+               
             </div>
             <!-- end main content-->
 
@@ -295,6 +276,7 @@
                 if(res === "success"){
               alertify.success("Added Successfully");
               $('#add-student').trigger("reset");
+              $('#programme,#department').change();
               fetchDepartments();
                 }else if(res === "already"){
                  alertify.error("Name Exists Already");

@@ -31,23 +31,23 @@ require_once '../db.php';
         if($insert_query){
 
                     //defining the parameters
-// $key = "eNZmDi2eh2o6G3FjMFmKhcWsU";  // Remember to put your own API Key here
-// $to = $get_contact;
-// $msg = $officer_message;
-// $sender_id = "Akim State"; //11 Characters maximum
-// $date_time = "";
+$key = "eNZmDi2eh2o6G3FjMFmKhcWsU";  // Remember to put your own API Key here
+$to = $get_contact;
+$msg = $officer_message;
+$sender_id = "Akim State"; //11 Characters maximum
+$date_time = "";
 
 //encode the message
-// $msg = urlencode($msg);
+$msg = urlencode($msg);
 
 //prepare your url
-// $url = "https://apps.mnotify.net/smsapi?"
-//             . "key=$key"
-//             . "&to=$to"
-//             . "&msg=$msg"
-//             . "&sender_id=$sender_id"
-//             . "&date_time=$date_time";
-// $response = file_get_contents($url) ;
+$url = "https://apps.mnotify.net/smsapi?"
+            . "key=$key"
+            . "&to=$to"
+            . "&msg=$msg"
+            . "&sender_id=$sender_id"
+            . "&date_time=$date_time";
+$response = file_get_contents($url) ;
 //response contains the response from mNotify
 
             echo 'success';
